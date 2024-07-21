@@ -1,79 +1,47 @@
-terraform {
-  required_providers {
-    docker = {
-      source  = "kreuzwerker/docker"
-      version = "2.16.0"
-    }
-  }
-}
-
-provider "docker" {
-}
-
-variable wordpress_port {
-  default = "8080"
-}
-
-resource "docker_volume" "db_data" {
-  name = "db_data"
-}
-
-resource "docker_network" "wordpress_net" {
-  name = "wordpress_net"
-}
-
-resource "docker_container" "db" {
-  name  = "db"
-  image = "mysql:8.3.0"
-  restart = "always"
-  network_mode = "wordpress_net"
-  env = [
-     "MYSQL_ROOT_PASSWORD=wordpress",
-     "MYSQL_PASSWORD=wordpress",
-     "MYSQL_USER=wordpress",
-     "MYSQL_DATABASE=wordpress"
-  ]
-  mounts {
-    type = "volume"
-    target = "/var/lib/mysql"
-    source = "db_data"
-    }
-}
-
-resource "docker_container" "wordpress" {
-  name  = "wordpress"
-  image = "wordpress:latest"
-  restart = "always"
-  network_mode = "wordpress_net"
-  env = [
-    "WORDPRESS_DB_HOST=db:3306",
-    "WORDPRESS_DB_USER=wordpress",
-    "WORDPRESS_DB_NAME=wordpress",
-    "WORDPRESS_DB_PASSWORD=wordpress"
-  ]
-  ports {
-    internal = "80"
-    external = "${var.wordpress_port}"
-  }
-}
-
 provider "aws" {
-  # Configuration options
   region = "us-east-1"
 }
 
+resource "aws_instance" "amb-prod3" {
+  ami           = "ami-0a0e5d9c7acc336f1"  # Escolha uma AMI compatível com Ubuntu
+  instance_type = "t2.micro"
+  key_name      = "terraform2"  # Substitua pelo nome do seu par de chaves
 
-# provider "docker" {
-#   host = "unix:///var/run/docker.sock"
-# }
+  vpc_security_group_ids = [
+    aws_security_group.allow_ssh.id,
+    aws_security_group.allow_https.id,
+    aws_security_group.allow_http.id
+  ]
 
-# # Pulls the image
-# resource "docker_image" "ubuntu" {
-#   name = "ubuntu:latest"
-# }
 
-# # Create a container
-# resource "docker_container" "foo" {
-#   image = docker_image.ubuntu.image_id
-#   name  = "foo"
-# }
+  # User data to install Docker and run the containers
+  user_data = <<-EOF
+              #!/bin/bash
+              sudo apt-get update
+              sudo apt-get install -y docker.io
+              sudo systemctl start docker
+              sudo systemctl enable docker
+              sudo docker pull mysql:8.0
+              sudo docker pull wordpress:latest
+              sudo docker network create wordpress_net
+              sudo docker run -d --name db --network wordpress_net \
+                -e MYSQL_ROOT_PASSWORD=wordpress \
+                -e MYSQL_PASSWORD=wordpress \
+                -e MYSQL_USER=wordpress \
+                -e MYSQL_DATABASE=wordpress \
+                -v db_data:/var/lib/mysql \
+                mysql:8.0
+              sudo docker run -d --name wordpress --network wordpress_net \
+                -e WORDPRESS_DB_HOST=db:3306 \
+                -e WORDPRESS_DB_USER=wordpress \
+                -e WORDPRESS_DB_NAME=wordpress \
+                -e WORDPRESS_DB_PASSWORD=wordpress \
+                -p 8080:80 \
+                wordpress:latest
+              EOF
+
+  tags = {
+    Name = "amb-prod3"
+  }
+}
+
