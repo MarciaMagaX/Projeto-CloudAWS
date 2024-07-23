@@ -8,6 +8,19 @@ Este projeto tem como objetivo:
 5) fornecer um arquivo docker-compose.yml para facilitar a criação dos containers
 6) configurar senha do usuário root do banco de dados 
 
+# Terraform AWS WordPress Deployment
+
+Este projeto utiliza o Terraform para criar uma instância AWS e configurar um ambiente WordPress usando Docker Compose. 
+
+## Pré-requisitos
+
+Antes de começar, certifique-se de ter os seguintes pré-requisitos instalados:
+
+- [Terraform](https://www.terraform.io/downloads.html)
+- [AWS CLI](https://aws.amazon.com/cli/)
+- Uma conta AWS com permissões suficientes para criar instâncias e grupos de segurança
+
+
 # Projeto de Deploy de WordPress com MySQL na AWS usando Docker e Terraform
 
 ## Descrição
@@ -59,6 +72,9 @@ Crie uma nova branch: git checkout -b minha-nova-feature.
 Faça suas alterações e confirme-as: git commit -m 'Adicionar nova feature'.
 Envie para a branch original: git push origin minha-nova-feature.
 Abra um pull request.
+
+Licença
+Este projeto está licenciado sob a Licença MIT. Veja o arquivo LICENSE para mais detalhes.
 
 
 Este README.md fornece uma visão clara e abrangente do projeto, facilitando para qualquer pessoa entender a estrutura, seguir os passos de configuração e deploy, e contribuir para o projeto.
