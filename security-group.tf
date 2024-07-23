@@ -1,78 +1,57 @@
-# resource "aws_security_group" "allow_ssh" {
-#   name        = "allow_ssh"
-#   description = "Permitir acesso remoto via porta 22 (ssh)"
-  
-#   ingress {
-#     description         = "SSH from VPC"
-#     from_port           = 22
-#     to_port             = 22
-#     protocol            = "tcp"
-#     cidr_blocks         = ["0.0.0.0/0"]
-#   }
+# Security Group para permitir SSH
+resource "aws_security_group" "allow_ssh" {
+  name_prefix = "allow_ssh"
 
-#   egress {
-#     description         = "Allow all outbound traffic"
-#     from_port           = 0
-#     to_port             = 0
-#     protocol            = "-1"
-#     cidr_blocks         = ["0.0.0.0/0"]
-#     ipv6_cidr_blocks    = ["::/0"]
-#   }
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
-#   tags = {
-#     Name = "allow_ssh"
-#   }
-# }
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
 
-# resource "aws_security_group" "allow_https" {
-#   name        = "allow_https"
-#   description = "Permitir acesso via porta 443 (https)"
-  
-#   ingress {
-#     description         = "HTTPS from VPC"
-#     from_port           = 443
-#     to_port             = 443
-#     protocol            = "tcp"
-#     cidr_blocks         = ["0.0.0.0/0"]
-#   }
+# Security Group para permitir HTTP
+resource "aws_security_group" "allow_http" {
+  name_prefix = "allow_http"
 
-#   egress {
-#     description         = "Allow all outbound traffic"
-#     from_port           = 0
-#     to_port             = 0
-#     protocol            = "-1"
-#     cidr_blocks         = ["0.0.0.0/0"]
-#     ipv6_cidr_blocks    = ["::/0"]
-#   }
+  ingress {
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
-#   tags = {
-#     Name = "allow_https"
-#   }
-# }
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
 
-# resource "aws_security_group" "allow_http" {
-#   name        = "allow_http"
-#   description = "Permitir acesso via porta 80 (http)"
-  
-#   ingress {
-#     description         = "HTTP from VPC"
-#     from_port           = 80
-#     to_port             = 80
-#     protocol            = "tcp"
-#     cidr_blocks         = ["0.0.0.0/0"]
-#   }
+# Security Group para permitir HTTPS
+resource "aws_security_group" "allow_https" {
+  name_prefix = "allow_https"
 
-#   egress {
-#     description         = "Allow all outbound traffic"
-#     from_port           = 0
-#     to_port             = 0
-#     protocol            = "-1"
-#     cidr_blocks         = ["0.0.0.0/0"]
-#     ipv6_cidr_blocks    = ["::/0"]
-#   }
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
-#   tags = {
-#     Name = "allow_http"
-#   }
-# }
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
 
