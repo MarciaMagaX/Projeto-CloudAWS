@@ -171,8 +171,8 @@ Passo 1: Configurar Credenciais AWS
 Configure suas credenciais AWS usando a AWS CLI:
 aws configure
 
-AWS Access Key ID [*******************]:
-AWS Secret Access Key [*******************]:
+AWS Access Key ID [SUA CHAVE]:
+AWS Secret Access Key [SEU SECRET]:
 Default region name [us-east-1]:
 Default output format [json]:
 
@@ -202,7 +202,7 @@ Digite yes quando solicitado para confirmar a aplicação do plano.
 
 # Acesso
 
-Após a conclusão da aplicação do Terraform, você pode acessar a instância WordPress através do endereço IP público da instância EC2 na porta 8080.
+Após a conclusão da aplicação do Terraform, você pode acessar a instância WordPress através do endereço IP público da instância EC2 na porta 8080, da seguinte maneira "http://IPPÚBLICO:8080
 
 
 # Limpeza
