@@ -1,4 +1,4 @@
-# Projeto-Minsait
+# Projeto-CloudAWS
 
 Este projeto tem como objetivo:
 1) criar uma VM
